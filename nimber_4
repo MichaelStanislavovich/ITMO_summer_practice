@@ -6,24 +6,26 @@ data = response.text
 
 values = []
 for line in data.splitlines():
-    line = line.strip()
-    if line:  
+    parts = line.split()
+    if len(parts) == 2:
         try:
-            number = float(line)
-            values.append(number)
+            value = float(parts[1].replace(',', '.'))
+            values.append(value)
         except ValueError:
-            print(f"предупреждение: '{line}' не является числом и будет пропущено.")
+            continue
 
 sum_values = 0
-n = len(values)
+count = 0
 for value in values:
     sum_values += value
-mean = sum_values / n
+    count += 1
+mean = sum_values / count
 
 sum_squared_diff = 0
 for value in values:
     sum_squared_diff += (value - mean) ** 2
-std_deviation = (sum_squared_diff / n) ** 0.5
+variance = sum_squared_diff / count
+std_deviation = variance ** 0.5
 
-print(f"Среднее значение: {mean}")
-print(f"Стандартное отклонение: {std_deviation}")
+print(f'Среднее значение: {mean}')
+print(f'среднеквадратическое отклонение: {std_deviation}')
