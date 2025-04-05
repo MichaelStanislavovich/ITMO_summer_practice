@@ -1,0 +1,29 @@
+import requests
+
+url = 'https://cloud.physics.itmo.ru/s/pY68e5CrdtQHF6M/download'
+response = requests.get(url)
+data = response.text
+
+values = []
+for line in data.splitlines():
+    line = line.strip()
+    if line:  
+        try:
+            number = float(line)
+            values.append(number)
+        except ValueError:
+            print(f"предупреждение: '{line}' не является числом и будет пропущено.")
+
+sum_values = 0
+n = len(values)
+for value in values:
+    sum_values += value
+mean = sum_values / n
+
+sum_squared_diff = 0
+for value in values:
+    sum_squared_diff += (value - mean) ** 2
+std_deviation = (sum_squared_diff / n) ** 0.5
+
+print(f"Среднее значение: {mean}")
+print(f"Стандартное отклонение: {std_deviation}")
